@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    let itemArray = ["Go to work","Go play tennis","Go home"]
+    var itemArray = ["Go to work","Go play tennis","Go home"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +47,48 @@ class ToDoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         }
         
+    }
+    
+    // MARK - Add New Items
+    
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            // what will happen after tap
+            
+            if textField.text != "" {
+                
+                self.itemArray.append(textField.text!)
+                
+                self.tableView.reloadData()
+                
+            } else {
+                
+                let nothingTypedAlert = UIAlertController(title: "Nothing was typed", message: "", preferredStyle: .alert)
+                
+                let nothingTypedAction = UIAlertAction(title: "Try Again", style: .default) { (nothingTypedAlert) in
+                    
+                    self.present(alert, animated: true)
+                }
+                
+                nothingTypedAlert.addAction(nothingTypedAction)
+                self.present(nothingTypedAlert, animated: true)
+            }
+            
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true)
     }
     
 }
